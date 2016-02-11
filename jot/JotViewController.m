@@ -23,15 +23,20 @@
 @property (nonatomic, strong, readwrite) JotDrawingContainer *drawingContainer;
 @property (nonatomic, strong) JotDrawView *drawView;
 @property (nonatomic, strong) JotTextEditView *textEditView;
-@property (nonatomic, strong) JotTextView *textView;
+
+@property (nonatomic, strong) JotTextView *textView; // The currently active black bar.
+@property (nonatomic, strong) NSMutableArray *textViews; // Stores all the black bars.
 
 @end
+
+int const MAX_BLACK_BARS = 20;
 
 @implementation JotViewController
 
 - (instancetype)init
 {
     if ((self = [super init])) {
+        _textViews = [[NSMutableArray alloc] init];
         
         _drawView = [JotDrawView new];
         _textEditView = [JotTextEditView new];
@@ -91,11 +96,6 @@
     
     [self.drawingContainer addSubview:self.drawView];
     [self.drawView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.drawingContainer);
-    }];
-    
-    [self.drawingContainer addSubview:self.textView];
-    [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.drawingContainer);
     }];
     
@@ -258,8 +258,20 @@
 
 - (void)clearText
 {
-    self.textString = @"";
-    [self.textView clearText];
+    for (JotTextView *textView in self.textViews) {
+        [textView removeFromSuperview];
+    }
+    
+    self.textView = nil;
+    
+    [self.textViews removeAllObjects];
+}
+
+- (void)undoLastBlackBar
+{
+    [self.textView removeFromSuperview];
+    [self.textViews removeLastObject];
+    self.textView = [self.textViews lastObject];
 }
 
 #pragma mark - Output UIImage
@@ -267,8 +279,12 @@
 - (UIImage *)drawOnImage:(UIImage *)image
 {
     UIImage *drawImage = [self.drawView drawOnImage:image];
+
+    for (JotTextView *textView in self.textViews) {
+        drawImage = [textView drawTextOnImage:drawImage];
+    }
     
-    return [self.textView drawTextOnImage:drawImage];
+    return drawImage;
 }
 
 - (UIImage *)renderImage
@@ -314,8 +330,23 @@
 
 - (void)handleTapGesture:(UIGestureRecognizer *)recognizer
 {
-    if (!(self.state == JotViewStateEditingText)) {
-        self.state = JotViewStateEditingText;
+    if (self.textViews.count >= MAX_BLACK_BARS) {
+        return;
+    }
+    
+    JotTextView *newTextView = [JotTextView new];
+    
+    self.textView = newTextView;
+    [self.textViews addObject:newTextView];
+    
+    [self.drawingContainer addSubview:newTextView];
+    
+    [newTextView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.drawingContainer);
+    }];
+    
+    if ([self.delegate respondsToSelector:@selector(blackBarAdded)]) {
+        [self.delegate blackBarAdded];
     }
 }
 

@@ -175,6 +175,8 @@ typedef NS_ENUM(NSUInteger, JotViewState){
  */
 - (void)clearText;
 
+- (void)undoLastBlackBar;
+
 /**
  *  Overlays the drawing and text on the given background image at the full
  *  resolution of the image.
@@ -228,5 +230,7 @@ typedef NS_ENUM(NSUInteger, JotViewState){
  *  @param isEditing    YES if entering edit (keyboard text entry) mode, NO if exiting edit mode
  */
 - (void)jotViewController:(JotViewController *)jotViewController isEditingText:(BOOL)isEditing;
+
+- (void)blackBarAdded;
 
 @end

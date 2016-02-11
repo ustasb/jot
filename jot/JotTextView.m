@@ -7,6 +7,10 @@
 //
 
 #import "JotTextView.h"
+#import <QuartzCore/QuartzCore.h>
+
+// http://stackoverflow.com/a/3532264/1575238
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 @interface JotTextView ()
 
@@ -23,6 +27,9 @@
 
 @end
 
+float const BLACK_BAR_WIDTH = 1.0f;
+float const BLACK_BAR_HEIGHT = 0.4f;
+
 @implementation JotTextView
 
 - (instancetype)init
@@ -37,8 +44,8 @@
         _scale = 1.f;
         _font = [UIFont systemFontOfSize:self.fontSize];
         _textAlignment = NSTextAlignmentCenter;
-        _textColor = [UIColor whiteColor];
-        _textString = @"";
+        _textColor = [UIColor blackColor];
+        _textString = @"--";
         _textLabel = [UILabel new];
         if (self.fitOriginalFontSizeToViewWidth) {
             self.textLabel.numberOfLines = 0;
@@ -48,6 +55,16 @@
         self.textLabel.textAlignment = self.textAlignment;
         self.textLabel.center = CGPointMake(CGRectGetMidX([UIScreen mainScreen].bounds),
                                             CGRectGetMidY([UIScreen mainScreen].bounds));
+        
+        self.textLabel.backgroundColor = [UIColor blackColor];
+        self.textLabel.layer.shadowOpacity = 0.6;
+        self.textLabel.layer.shadowRadius = 3.0;
+        self.textLabel.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.textLabel.layer.shadowOffset = CGSizeMake(0.0, 2.0);
+        self.textLabel.layer.borderColor = UIColorFromRGB(0x3498DB).CGColor; // Hitpic's primary blue color.
+        self.textLabel.layer.allowsEdgeAntialiasing = YES; // http://stackoverflow.com/a/21792436/1575238
+        self.textLabel.layer.borderWidth = 1.0;
+        
         self.referenceCenter = CGPointZero;
         [self sizeLabel];
         [self addSubview:self.textLabel];
@@ -103,8 +120,8 @@
         CGPoint labelCenter = self.textLabel.center;
         CGRect scaledLabelFrame = CGRectMake(0.f,
                                              0.f,
-                                             CGRectGetWidth(_labelFrame) * _scale * 1.05f,
-                                             CGRectGetHeight(_labelFrame) * _scale * 1.05f);
+                                             CGRectGetWidth(_labelFrame) * _scale * BLACK_BAR_WIDTH,
+                                             CGRectGetHeight(_labelFrame) * _scale * BLACK_BAR_HEIGHT);
         CGFloat currentFontSize = self.fontSize * _scale;
         self.textLabel.font = [self.font fontWithSize:currentFontSize];
         self.textLabel.frame = scaledLabelFrame;
@@ -170,8 +187,8 @@
         CGPoint labelCenter = self.textLabel.center;
         CGRect scaledLabelFrame = CGRectMake(0.f,
                                              0.f,
-                                             CGRectGetWidth(_labelFrame) * _scale * 1.05f,
-                                             CGRectGetHeight(_labelFrame) * _scale * 1.05f);
+                                             CGRectGetWidth(_labelFrame) * _scale * BLACK_BAR_WIDTH,
+                                             CGRectGetHeight(_labelFrame) * _scale * BLACK_BAR_HEIGHT);
         CGAffineTransform labelTransform = self.textLabel.transform;
         self.textLabel.transform = CGAffineTransformIdentity;
         self.textLabel.frame = scaledLabelFrame;
@@ -213,8 +230,8 @@
     CGSize originalSize = [temporarySizingLabel sizeThatFits:insetViewRect.size];
     temporarySizingLabel.frame = CGRectMake(0.f,
                                             0.f,
-                                            originalSize.width * 1.05f,
-                                            originalSize.height * 1.05f);
+                                            originalSize.width * BLACK_BAR_WIDTH,
+                                            originalSize.height * BLACK_BAR_HEIGHT);
     temporarySizingLabel.center = self.textLabel.center;
     self.labelFrame = temporarySizingLabel.frame;
 }
