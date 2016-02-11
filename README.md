@@ -1,3 +1,5 @@
+**Customized to replace text views with black bars.**
+
 [![Open Source at IFTTT](http://ifttt.github.io/images/open-source-ifttt.svg)](http://ifttt.github.io)
 
 ![jot Logo](./Docs/jotbanner.jpg)
