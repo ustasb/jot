@@ -274,6 +274,28 @@ int const MAX_BLACK_BARS = 20;
     self.textView = [self.textViews lastObject];
 }
 
+- (void)addBlackBar
+{
+    if (self.textViews.count >= MAX_BLACK_BARS) {
+        return;
+    }
+
+    JotTextView *newTextView = [JotTextView new];
+
+    self.textView = newTextView;
+    [self.textViews addObject:newTextView];
+
+    [self.drawingContainer addSubview:newTextView];
+
+    [newTextView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.drawingContainer);
+    }];
+
+    if ([self.delegate respondsToSelector:@selector(blackBarAdded)]) {
+        [self.delegate blackBarAdded];
+    }
+}
+
 #pragma mark - Output UIImage
 
 - (UIImage *)drawOnImage:(UIImage *)image
@@ -330,24 +352,7 @@ int const MAX_BLACK_BARS = 20;
 
 - (void)handleTapGesture:(UIGestureRecognizer *)recognizer
 {
-    if (self.textViews.count >= MAX_BLACK_BARS) {
-        return;
-    }
-    
-    JotTextView *newTextView = [JotTextView new];
-    
-    self.textView = newTextView;
-    [self.textViews addObject:newTextView];
-    
-    [self.drawingContainer addSubview:newTextView];
-    
-    [newTextView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.drawingContainer);
-    }];
-    
-    if ([self.delegate respondsToSelector:@selector(blackBarAdded)]) {
-        [self.delegate blackBarAdded];
-    }
+  // do nothing...
 }
 
 - (void)handlePanGesture:(UIGestureRecognizer *)recognizer

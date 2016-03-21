@@ -177,6 +177,8 @@ typedef NS_ENUM(NSUInteger, JotViewState){
 
 - (void)undoLastBlackBar;
 
+- (void)addBlackBar;
+
 /**
  *  Overlays the drawing and text on the given background image at the full
  *  resolution of the image.
