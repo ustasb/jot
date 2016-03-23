@@ -37,14 +37,14 @@ int const MAX_BLACK_BARS = 20;
 {
     if ((self = [super init])) {
         _textViews = [[NSMutableArray alloc] init];
-        
+
         _drawView = [JotDrawView new];
         _textEditView = [JotTextEditView new];
         _textEditView.delegate = self;
         _textView = [JotTextView new];
         _drawingContainer = [JotDrawingContainer new];
         self.drawingContainer.delegate = self;
-        
+
         _font = self.textView.font;
         self.textEditView.font = self.font;
         _fontSize = self.textView.fontSize;
@@ -59,20 +59,20 @@ int const MAX_BLACK_BARS = 20;
         _textEditingInsets = self.textEditView.textEditingInsets;
         _initialTextInsets = self.textView.initialTextInsets;
         _state = JotViewStateDefault;
-        
+
         _pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchOrRotateGesture:)];
         self.pinchRecognizer.delegate = self;
-        
+
         _rotationRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchOrRotateGesture:)];
         self.rotationRecognizer.delegate = self;
-        
+
         _panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
         self.panRecognizer.delegate = self;
-        
+
         _tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
         self.tapRecognizer.delegate = self;
     }
-    
+
     return self;
 }
 
@@ -85,25 +85,25 @@ int const MAX_BLACK_BARS = 20;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.view.backgroundColor = [UIColor clearColor];
     self.drawingContainer.clipsToBounds = YES;
-    
+
     [self.view addSubview:self.drawingContainer];
     [self.drawingContainer mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    
+
     [self.drawingContainer addSubview:self.drawView];
     [self.drawView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.drawingContainer);
     }];
-    
+
     [self.view addSubview:self.textEditView];
     [self.textEditView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    
+
     [self.drawingContainer addGestureRecognizer:self.tapRecognizer];
     [self.drawingContainer addGestureRecognizer:self.panRecognizer];
     [self.drawingContainer addGestureRecognizer:self.rotationRecognizer];
@@ -116,15 +116,15 @@ int const MAX_BLACK_BARS = 20;
 {
     if (_state != state) {
         _state = state;
-        
+
         self.textView.hidden =
         self.textEditView.isEditing = (state == JotViewStateEditingText);
-        
+
         if (state == JotViewStateEditingText
             && [self.delegate respondsToSelector:@selector(jotViewController:isEditingText:)]) {
             [self.delegate jotViewController:self isEditingText:YES];
         }
-        
+
         self.drawingContainer.multipleTouchEnabled =
         self.tapRecognizer.enabled =
         self.panRecognizer.enabled =
@@ -261,9 +261,9 @@ int const MAX_BLACK_BARS = 20;
     for (JotTextView *textView in self.textViews) {
         [textView removeFromSuperview];
     }
-    
+
     self.textView = nil;
-    
+
     [self.textViews removeAllObjects];
 }
 
@@ -290,10 +290,6 @@ int const MAX_BLACK_BARS = 20;
     [newTextView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.drawingContainer);
     }];
-
-    if ([self.delegate respondsToSelector:@selector(blackBarAdded)]) {
-        [self.delegate blackBarAdded];
-    }
 }
 
 #pragma mark - Output UIImage
@@ -305,7 +301,7 @@ int const MAX_BLACK_BARS = 20;
     for (JotTextView *textView in self.textViews) {
         drawImage = [textView drawTextOnImage:drawImage];
     }
-    
+
     return drawImage;
 }
 
@@ -335,16 +331,16 @@ int const MAX_BLACK_BARS = 20;
 - (UIImage *)renderImageWithSize:(CGSize)size
 {
     UIImage *renderDrawingImage = [self.drawView renderDrawingWithSize:size];
-    
+
     return [self.textView drawTextOnImage:renderDrawingImage];
 }
 
 - (UIImage *)renderImageWithSize:(CGSize)size onColor:(UIColor *)color
 {
     UIImage *colorImage = [UIImage jotImageWithColor:color size:size];
-    
+
     UIImage *renderDrawingImage = [self.drawView drawOnImage:colorImage];
-    
+
     return [self.textView drawTextOnImage:renderDrawingImage];
 }
 
@@ -410,9 +406,9 @@ int const MAX_BLACK_BARS = 20;
     if (self.state == JotViewStateEditingText) {
         self.state = JotViewStateText;
     }
-    
+
     self.textString = textString;
-    
+
     if ([self.delegate respondsToSelector:@selector(jotViewController:isEditingText:)]) {
         [self.delegate jotViewController:self isEditingText:NO];
     }
