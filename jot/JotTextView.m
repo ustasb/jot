@@ -61,7 +61,7 @@ float const BLACK_BAR_HEIGHT = 0.4f;
         self.textLabel.layer.shadowRadius = 3.0;
         self.textLabel.layer.shadowColor = [UIColor blackColor].CGColor;
         self.textLabel.layer.shadowOffset = CGSizeMake(0.0, 2.0);
-        self.textLabel.layer.borderColor = UIColorFromRGB(0x3498DB).CGColor; // Hitpic's primary blue color.
+        self.textLabel.layer.borderColor = UIColorFromRGB(0xEA745A).CGColor; // Hitpic's primary blue color.
         self.textLabel.layer.allowsEdgeAntialiasing = YES; // http://stackoverflow.com/a/21792436/1575238
         self.textLabel.layer.borderWidth = 1.0;
         
