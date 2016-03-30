@@ -55,26 +55,29 @@ float const BLACK_BAR_HEIGHT = 0.4f;
         self.textLabel.textAlignment = self.textAlignment;
         self.textLabel.center = CGPointMake(CGRectGetMidX([UIScreen mainScreen].bounds),
                                             CGRectGetMidY([UIScreen mainScreen].bounds));
-        
+
         self.textLabel.backgroundColor = [UIColor blackColor];
         self.textLabel.layer.shadowOpacity = 0.6;
         self.textLabel.layer.shadowRadius = 3.0;
         self.textLabel.layer.shadowColor = [UIColor blackColor].CGColor;
         self.textLabel.layer.shadowOffset = CGSizeMake(0.0, 2.0);
-        self.textLabel.layer.borderColor = UIColorFromRGB(0xEA745A).CGColor; // Hitpic's primary blue color.
+
+        // Hitpic's brand color on black background with 60 opacity. The original is too bright and distracting.
+        self.textLabel.layer.borderColor = UIColorFromRGB(0x8C4636).CGColor;
+
         self.textLabel.layer.allowsEdgeAntialiasing = YES; // http://stackoverflow.com/a/21792436/1575238
         self.textLabel.layer.borderWidth = 1.0;
-        
+
         self.referenceCenter = CGPointZero;
         [self sizeLabel];
         [self addSubview:self.textLabel];
-        
+
         _referenceRotateTransform = CGAffineTransformIdentity;
         _currentRotateTransform = CGAffineTransformIdentity;
-        
+
         self.userInteractionEnabled = NO;
     }
-    
+
     return self;
 }
 
