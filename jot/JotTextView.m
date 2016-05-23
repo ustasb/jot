@@ -63,7 +63,7 @@ float const BLACK_BAR_HEIGHT = 0.4f;
         self.textLabel.layer.shadowOffset = CGSizeMake(0.0, 2.0);
 
         // Hitpic's brand color on black background with 60 opacity. The original is too bright and distracting.
-        self.textLabel.layer.borderColor = UIColorFromRGB(0x8C4636).CGColor;
+        self.textLabel.layer.borderColor = UIColorFromRGB(0x8E4136).CGColor;
 
         self.textLabel.layer.allowsEdgeAntialiasing = YES; // http://stackoverflow.com/a/21792436/1575238
         self.textLabel.layer.borderWidth = 1.0;
