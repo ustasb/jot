@@ -29,7 +29,7 @@
 
 @end
 
-int const MAX_BLACK_BARS = 20;
+int const MAX_BLACK_BARS = 10;
 
 @implementation JotViewController
 
