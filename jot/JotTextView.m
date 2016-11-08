@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 // http://stackoverflow.com/a/3532264/1575238
-#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#define UIColorFromHex(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16))/255.0 green:((float)((hexValue & 0xFF00) >> 8))/255.0 blue:((float)(hexValue & 0xFF))/255.0 alpha:1.0]
 
 @interface JotTextView ()
 
@@ -61,6 +61,11 @@ float const BLACK_BAR_HEIGHT = 0.4f;
         self.textLabel.layer.shadowRadius = 3.0;
         self.textLabel.layer.shadowColor = [UIColor blackColor].CGColor;
         self.textLabel.layer.shadowOffset = CGSizeMake(0.0, 2.0);
+
+        // Hitpic's brand color.
+        self.textLabel.layer.borderColor = UIColorFromHex(0x0EADFF).CGColor;
+        self.textLabel.layer.allowsEdgeAntialiasing = YES; // http://stackoverflow.com/a/21792436/1575238
+        self.textLabel.layer.borderWidth = 1.0;
 
         self.referenceCenter = CGPointZero;
         [self sizeLabel];
