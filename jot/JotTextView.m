@@ -65,7 +65,7 @@ float const BLACK_BAR_HEIGHT = 0.4f;
         // Hitpic's brand color.
         self.textLabel.layer.borderColor = UIColorFromHex(0x0EADFF).CGColor;
         self.textLabel.layer.allowsEdgeAntialiasing = YES; // http://stackoverflow.com/a/21792436/1575238
-        self.textLabel.layer.borderWidth = 1.0;
+        self.textLabel.layer.borderWidth = 0.5;
 
         self.referenceCenter = CGPointZero;
         [self sizeLabel];
